@@ -1,0 +1,109 @@
+---
+description: MASKIT MVP Rules (Go)
+globs: ["**/*.go"]
+alwaysApply: true
+---
+
+# MASKIT — MVP DEVELOPMENT RULES
+
+## 🎯 Primary Goal
+Build MASKIT as a **minimal local-first CLI tool** that masks sensitive data
+before developers paste content into AI tools.
+
+MVP focus:
+- paste → detect → mask → output
+- simplicity over completeness
+
+This phase is called **Builder Mode**.
+
+---
+
+## 🔒 Hard Constraints (Do Not Violate)
+
+1. NO network calls.
+   - No telemetry
+   - No analytics
+   - No external APIs
+
+2. Prefer Go standard library only.
+   Allowed packages:
+   - regexp
+   - strings
+   - bufio
+   - os
+   - flag
+   - fmt
+   - testing
+
+3. Preserve original text structure.
+   - Replace ONLY matched substrings.
+   - Do NOT reformat indentation or spacing.
+
+4. Deterministic placeholders within a run:
+   Examples:
+   - {{EMAIL:1}}
+   - {{URL:1}}
+   - {{SECRET:HIGH_ENTROPY:1}}
+
+5. Keep implementation SMALL.
+   Target structure:
+
+   main.go
+   mask.go
+   mask_test.go
+
+---
+
+## 🚫 Explicitly Out of Scope (MVP)
+
+Do NOT introduce:
+
+- Plugin systems
+- Config frameworks
+- Enterprise policy engines
+- AST parsing
+- Multi-language analysis
+- UI / IDE integrations
+- Prompt generation features
+- Persistence layers
+- Dependency injection frameworks
+
+If unsure, choose the simplest implementation.
+
+---
+
+## 🧠 Coding Style Guidelines
+
+- Prefer functions over structs unless necessary.
+- Prefer explicit error handling and return values over panics.
+- Avoid abstractions that are not immediately required.
+- Use clear, readable regex.
+- Table-driven tests are preferred.
+- Write code that a single developer can understand quickly.
+
+---
+
+## 🧪 Definition of Done (MVP)
+
+A change is considered complete when:
+
+- Sensitive patterns are replaced with placeholders.
+- Tests pass using `go test ./...`.
+- The CLI works via stdin or a file argument.
+- No new architectural layers were introduced.
+- **docs/test-plan.md** is updated when you add or update features—keep only scenario tests (Given / Expected / Test / Manual check).
+- **docs/PRODUCT-SCORECARD.md** is updated when you add or update features (feature log and scorecard if dimensions changed).
+
+---
+
+## 🔮 Future Expansion (NOT NOW)
+
+These may exist AFTER MVP:
+
+- Additional detectors
+- Configurable policies
+- IDE integrations
+- Safe prompt generation
+- Workspace-level settings
+
+Do not implement these during MVP.
