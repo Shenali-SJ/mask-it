@@ -3,7 +3,7 @@
 Track complexity, productizability, and other signals so you know when this is **market-ready** vs. **still a side project**. Update this file whenever you implement a feature or a meaningful part of one.
 
 ---
-
+ 
 ## Scorecard (current)
 
 | Dimension | Score (1–5) | Notes |
@@ -46,6 +46,7 @@ Log each feature or meaningful change: what shipped, and how it moved the scores
 | (update) | Safe example domains (RFC 2606): example.com, example.org, example.net and subdomains—URLs and emails at these hosts are not masked; reduces noise in docs/samples | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
 | (update) | Re-mask / paste: when input already contains {{EMAIL:n}} or {{URL:n}}, new sensitive data is numbered from max existing +1 so identities stay distinct | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
 | (update) | Same email/URL repeated: deduplicate by value—repeated content gets the same placeholder (e.g. shenali@ifs.com twice → {{EMAIL:1}} and {{EMAIL:1}}) | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
+| (update) | IPv4 detection: mask IPv4 addresses as {{IPV4:n}} (dedupe by value, loopback IPv4 left unmasked, IPv4 inside URLs treated as part of URL) | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
 
 ---
 
@@ -69,4 +70,4 @@ Ask these periodically. Answer in 1–2 sentences and add the date.
 
 ---
 
-*Last scorecard update: same email/URL repeated → same placeholder (dedupe by value).*
+*Last scorecard update: IPv4 masking added ({{IPV4:n}} with dedupe and loopback safety).*
