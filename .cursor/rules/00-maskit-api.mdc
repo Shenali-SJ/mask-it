@@ -1,0 +1,91 @@
+---
+description: MASKIT API Rules (Go)
+globs: ["**/*.go"]
+alwaysApply: true
+---
+
+# MASKIT — API Rules (Go)
+
+## 🎯 Current Goal
+MASKIT is a developer-first tool that masks sensitive data before
+it reaches AI tools. The Go layer is responsible for:
+- CLI mode: stdin → mask → stdout
+- Server mode: `maskit serve` → HTTP API on :8080
+
+---
+
+## ✅ Allowed
+
+### Dependencies
+- Go standard library always preferred
+- Carefully selected packages allowed:
+  - `github.com/rs/cors` for CORS handling
+  - `github.com/gorilla/mux` for routing
+  - Any new package must be justified before adding
+
+### Network
+- CLI (`main.go` stdin mode) must NEVER make network calls
+- HTTP server (`maskit serve`) may make network calls for:
+  - Future auth
+  - Future telemetry (opt-in only)
+  - Nothing yet — ask before adding
+
+### Persistence
+- No persistence layer yet
+- No databases, no file storage
+- All masking is stateless per request
+
+---
+
+## 🔒 Hard Constraints
+
+1. Preserve original text structure.
+   - Replace ONLY matched substrings.
+   - Do NOT reformat indentation or spacing.
+
+2. Deterministic placeholders within a run:
+   - {{EMAIL:1}}, {{URL:1}}, {{IPV4:1}}, {{CONNSTR:1}}
+
+3. CLI mode must remain working at all times.
+   - `maskit serve` must not break `maskit` CLI behaviour.
+
+4. No telemetry or analytics without explicit opt-in.
+
+5. API contract:
+   - POST /api/mask
+   - Request:  { "text": "..." }
+   - Response: { "masked": "..." }
+   - Do not change this contract without consulting first.
+
+---
+
+## 🚫 Out of Scope (Do Not Add)
+
+- Plugin systems
+- Config frameworks
+- Enterprise policy engines
+- AST parsing
+- Persistence layers
+- Dependency injection frameworks
+- Auth (not yet)
+
+---
+
+## 🧠 Coding Style
+
+- Prefer functions over structs unless necessary
+- Explicit error handling, no panics
+- Avoid premature abstractions
+- Table-driven tests preferred
+- Clear, readable regex
+
+---
+
+## 🧪 Definition of Done
+
+- Tests pass via `go test ./...`
+- CLI still works via stdin
+- `maskit serve` starts and `/api/mask` responds
+- No breaking changes to existing placeholder format
+- **docs/test-plan.md** updated for new features
+- **docs/PRODUCT-SCORECARD.md** updated for new features

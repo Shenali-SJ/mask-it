@@ -1,7 +1,6 @@
 ---
-description: MASKIT MVP Rules (Go)
-globs: ["**/*.go"]
-alwaysApply: true
+description: 
+alwaysApply: false
 ---
 
 # MASKIT — MVP DEVELOPMENT RULES
