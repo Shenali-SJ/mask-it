@@ -6,6 +6,7 @@
 4. Doesnt redact localhost (localhost or 127:)
 5. URL redaction - suppports multiple protocols (SMTP)
 6. IpV4 support
+7. Safe hosts - a confiurable json file - an allow list - eg: pythong.docs.org
 
 ## To be implemented immediately
 1. Connection string redaction

@@ -39,6 +39,9 @@ Each scenario is a **situation** (who, what, outcome). When you add or change be
 | User pastes same IPv4 twice              | `primary 10.1.2.3, backup 10.1.2.3`      | `primary {{IPV4:1}}, backup {{IPV4:1}}`             | `same IPv4 twice gets same placeholder`      |                                                            |
 | User pastes two different IPv4 addresses | `a 10.1.2.3 and b 192.168.0.1`           | `a {{IPV4:1}} and b {{IPV4:2}}`                     | `different IPv4s get different placeholders` |                                                            |
 | User pastes email and URL                | `mail a@b.co or https://x.com`           | `mail {{EMAIL:1}} or {{URL:1}}`                     | `email and URL`                              | `echo "mail a@b.co or https://x.com" | ./maskit`           |
+| User pastes DB connection string         | `postgres://user:pass@db.internal:5432/app` | `{{CONN:1}}`                                     | `single postgres connection string`          | `echo "postgres://user:pass@db.internal:5432/app" | ./maskit` |
+| User pastes same DB connection twice     | `a postgres://user:pass@db:5432/app and postgres://user:pass@db:5432/app` | `a {{CONN:1}} and {{CONN:1}}`           | `same connection string twice gets same placeholder` |                                                       |
+| User pastes DB connection and normal URL | `postgres://user:pass@db:5432/app and https://x.com` | `{{CONN:1}} and {{URL:1}}`                 | `connection string and normal URL`           |                                                       |
 
 
 ### 1.4 Formatting and placeholders
@@ -80,6 +83,8 @@ RFC 2606 reserved example.com, example.org, example.net (and subdomains) for doc
 | User pastes email at example.org                             | `reply to dev@example.org`      | `reply to dev@example.org`      | `email at example.org not masked`      |                                              |
 | User pastes email at subdomain of example.com                | `team@docs.example.com`         | `team@docs.example.com`         | `email at docs.example.com not masked` |                                              |
 
+**Safe-hosts allowlist (optional file):** If a JSON allowlist is configured (default `~/.config/maskit/safe-hosts.json` or `MASKIT_SAFE_HOSTS_FILE`), URLs whose host is in the list (or a subdomain of an entry) are not masked. See `safe-hosts.example.json` and manual-testing §6.
+
 
 ### 1.8 Input already contains placeholders (re-mask / paste)
 
@@ -116,6 +121,8 @@ When input already has `{{EMAIL:n}}` or `{{URL:n}}`, new sensitive data is numbe
 | (update)  | Input already contains placeholders: new sensitive data is numbered from max existing +1 (re-mask / paste). Added §1.8 and four scenarios; renumbered CLI to §1.9.                                                                                                                                 |
 | (update)  | Same email or same URL repeated: deduplicate by value—repeated content gets the same placeholder number (e.g. two [shenali@ifs.com](mailto:shenali@ifs.com) → {{EMAIL:1}} and {{EMAIL:1}}). Added scenarios in §1.3.                                                                               |
 | (update)  | IPv4 addresses: added detection and masking with {{IPV4:n}}, including dedupe (same IPv4 → same placeholder), multiple IPv4s, IPv4 inside URLs (URL wins), and loopback IPv4 left unmasked. Added scenarios in §1.2, §1.3, and §1.5.                                                               |
+| (update)  | DB connection strings: added detection and masking of common DB URL schemes as {{CONN:n}}, with dedupe by value and no separate masking of inner emails/URLs/IPs. Added scenarios in §1.3.                                                                                                    |
+| (update)  | Safe-hosts allowlist: optional JSON file (default ~/.config/maskit/safe-hosts.json or MASKIT_SAFE_HOSTS_FILE) lists hosts whose URLs are not masked. Subdomain matching (e.g. python.org allows docs.python.org). TestMask_safeHostsAllowlist; example file safe-hosts.example.json. |
 
 
 ---

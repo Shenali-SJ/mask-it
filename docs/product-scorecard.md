@@ -47,6 +47,8 @@ Log each feature or meaningful change: what shipped, and how it moved the scores
 | (update) | Re-mask / paste: when input already contains {{EMAIL:n}} or {{URL:n}}, new sensitive data is numbered from max existing +1 so identities stay distinct | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
 | (update) | Same email/URL repeated: deduplicate by value—repeated content gets the same placeholder (e.g. shenali@ifs.com twice → {{EMAIL:1}} and {{EMAIL:1}}) | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
 | (update) | IPv4 detection: mask IPv4 addresses as {{IPV4:n}} (dedupe by value, loopback IPv4 left unmasked, IPv4 inside URLs treated as part of URL) | 1 | 1 | 1 | 2 | 2 | 1 | 3 |
+| (update) | DB connection strings: mask common connection-string URLs (postgres/mysql/mariadb/sqlserver/mssql/mongodb/redis) as {{CONN:n}} (dedupe by value, no separate masking of inner emails/URLs/IPs) | 1 | 1 | 1 | 3 | 3 | 1 | 3 |
+| (update) | Safe-hosts allowlist: optional JSON file lists hosts whose URLs are not masked (reference URLs for LLM context); default path ~/.config/maskit/safe-hosts.json, override via MASKIT_SAFE_HOSTS_FILE | 1 | 1 | 1 | 3 | 3 | 1 | 3 |
 
 ---
 
@@ -70,4 +72,4 @@ Ask these periodically. Answer in 1–2 sentences and add the date.
 
 ---
 
-*Last scorecard update: IPv4 masking added ({{IPV4:n}} with dedupe and loopback safety).*
+*Last scorecard update: safe-hosts allowlist (optional JSON file) for reference URLs.* 

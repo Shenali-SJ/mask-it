@@ -117,7 +117,26 @@ Expected: `My email is {{EMAIL:1}}. Docs: {{URL:1}}`
 
 ---
 
-## 6. If something fails
+## 6. Safe-hosts allowlist (optional)
+
+URLs whose host is in an allowlist file are **not** masked, so you can keep reference URLs (e.g. docs) visible for the LLM.
+
+- **Default path:** `~/.config/maskit/safe-hosts.json`
+- **Override:** set `MASKIT_SAFE_HOSTS_FILE` to the path of your JSON file (absolute path recommended).
+- **Format:** JSON array of host strings, e.g. `["docs.python.org", "developer.mozilla.org"]`. Subdomains match (e.g. `python.org` allows `docs.python.org`).
+
+Example using the example file:
+
+```bash
+export MASKIT_SAFE_HOSTS_FILE="$(pwd)/safe-hosts.example.json"
+echo "see https://docs.python.org/3/ and https://api.private.com" | ./maskit
+```
+
+Expected: `see https://docs.python.org/3/ and {{URL:1}}` (docs URL unchanged, api URL masked).
+
+---
+
+## 7. If something fails
 
 - Run `go test ./... -v` and fix any failing test first.
 - Ensure you’re in the project root and using the binary you just built (`./maskit`).
